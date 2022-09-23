@@ -16,9 +16,11 @@ public class Dfs {
     private int f[];
 
     private int startVertice;
+    private int finishVertice;
     private int time;
+    private boolean found;
 
-    public Dfs(String path){
+    public Dfs(String path, int startVertice, int finishVertice){
         try (BufferedReader buffRead = new BufferedReader(new FileReader(path))) {
             String line = buffRead.readLine();
             this.vertices = Integer.parseInt(line);
@@ -43,7 +45,9 @@ public class Dfs {
                 line = buffRead.readLine();
             }
 
-            this.startVertice = 0;
+            this.startVertice = startVertice;
+            this.finishVertice = finishVertice;
+            this.found = false;
             DFSstart(graph, startVertice);
         } catch (IOException e) {
             System.out.println(e.getMessage());
@@ -65,10 +69,11 @@ public class Dfs {
         for (Integer v : g.get(u)) {
             if ("BRANCO".equals(color[v])) {
                 ante[v] = u;
+                if (found) break;
+                if (v == finishVertice) found = true;
                 showVertices();
                 printPath(v);
                 System.out.println();
-
                 DFSvisit(g, v);
             }
         }
